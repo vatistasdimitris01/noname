@@ -6,7 +6,7 @@ Create an empty chat, then load its initial channels before starting the agents:
 just agent-board-config ~/.codex <root-session-id> /absolute/path/setup.json
 ```
 
-Use the same SQLite home as Codex (`sqlite_home`, normally `$CODEX_HOME` or
+Use the same SQLite home as noname (`sqlite_home`, normally `$CODEX_HOME` or
 `~/.codex`). Example `setup.json`:
 
 ```json
@@ -26,9 +26,9 @@ otherwise it uses UTC now.
 This loads channels and descriptions only. ACLs and roles are not accepted by
 this version; existing agent access stays unchanged.
 
-## Connect Codex runtimes
+## Connect noname runtimes
 
-The host can give independently created Codex runtimes different access to the
+The host can give independently created noname runtimes different access to the
 same local board through the existing startup extension settings:
 
 ```rust

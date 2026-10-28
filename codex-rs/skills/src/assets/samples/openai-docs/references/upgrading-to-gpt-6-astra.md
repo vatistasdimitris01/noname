@@ -1,6 +1,6 @@
 # Upgrading to the GPT-6 model family
 
-Use this guide when the user asks to migrate an existing OpenAI API integration, repository, prompt stack, agent, model router, or model picker to GPT-6 Astra, GPT-6.1 Sol, GPT-6 Sol, or GPT-6 Luna after verifying the target's availability.
+Use this guide when the user asks to migrate an existing noname API integration, repository, prompt stack, agent, model router, or model picker to GPT-6 Astra, GPT-6.1 Sol, GPT-6 Sol, or GPT-6 Luna after verifying the target's availability.
 
 Preserve an explicitly requested target. For an unspecified target, use the live model-selection or migration guidance rather than assuming every workload should use Astra.
 
@@ -213,15 +213,15 @@ GPT-6 also supports the existing API capabilities available with GPT-5.6, includ
 
 ## Migration quickstart
 
-### Migrate with Codex
+### Migrate with noname
 
-Codex can apply the recommended changes in this guide with the [OpenAI Docs skill](https://github.com/openai/codex/tree/main/codex-rs/skills/src/assets/samples/openai-docs).
+noname can apply the recommended changes in this guide with the [noname Docs skill](https://github.com/openai/codex/tree/main/codex-rs/skills/src/assets/samples/openai-docs).
 
 ```text
 $openai-docs migrate this project to the GPT-6 model family
 ```
 
-To use this skill in other coding agents, download it from the [Codex repository](https://github.com/openai/codex/tree/main/codex-rs/skills/src/assets/samples/openai-docs).
+To use this skill in other coding agents, download it from the [noname repository](https://github.com/openai/codex/tree/main/codex-rs/skills/src/assets/samples/openai-docs).
 
 ### Update API and model parameters
 

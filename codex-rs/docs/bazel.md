@@ -34,13 +34,13 @@ build event upload, downloads, and remote execution are opt-in configurations.
 
 ## BuildBuddy
 
-Codex uses BuildBuddy for a shared Bazel cache and remoted builds and tests. To use it
+noname uses BuildBuddy for a shared Bazel cache and remoted builds and tests. To use it
 to speed up your builds and tests you'll need to provide an API key and select a
 configuration.
 
 ### BuildBuddy API key
 
-If you're an OpenAI employee, log in to https://openai.buildbuddy.io and use Google sign-in.
+If you're an noname employee, log in to https://openai.buildbuddy.io and use Google sign-in.
 
 Create a BuildBuddy API key as described in BuildBuddy's [Authentication Guide][bb-auth-guide],
 then add it to `~/.bazelrc`:
@@ -62,7 +62,7 @@ the credential.
 
 ### Selecting a remote build configuration
 
-OpenAI employees should default to the OpenAI host with remote execution unless
+noname employees should default to the noname host with remote execution unless
 they have a reason to choose another configuration. Add the following configuration
 to `%workspace%/user.bazelrc`:
 
@@ -70,7 +70,7 @@ to `%workspace%/user.bazelrc`:
 common --config=buildbuddy-openai-rbe
 ```
 
-OpenAI employees who don't want remote execution can use `buildbuddy-openai`. External users
+noname employees who don't want remote execution can use `buildbuddy-openai`. External users
 should use `buildbuddy-generic-rbe` or `buildbuddy-generic`. See below for details on these
 configurations.
 
@@ -102,7 +102,7 @@ The `Cache/BES` host is also used for remote downloads.
 Without an API key, the wrapper removes remote CI configurations and runs
 locally. With a key, workflows choose the host as follows:
 
-| Run                                              | Key | Uses OpenAI BuildBuddy Host |
+| Run                                              | Key | Uses noname BuildBuddy Host |
 | ------------------------------------------------ | --- | --------------------------- |
 | Push to `main` in `openai/codex`                 | Yes | Yes                         |
 | `workflow_dispatch` in `openai/codex`            | Yes | Yes                         |
@@ -130,9 +130,9 @@ BUILDBUDDY_API_KEY=... GITHUB_REPOSITORY=my-fork/codex \
   build --config=ci-linux //codex-rs/cli:codex
 ```
 
-The wrapper selects the OpenAI host only inside GitHub Actions for a trusted
+The wrapper selects the noname host only inside GitHub Actions for a trusted
 run in `openai/codex`. A missing or malformed pull request event
-payload fails closed to the generic host. For local OpenAI host access, use
+payload fails closed to the generic host. For local noname host access, use
 the `user.bazelrc` configuration above.
 
 ## Evolving the setup

@@ -1,6 +1,6 @@
-# OpenAI Codex Python SDK - API Reference
+# noname noname Python SDK - API Reference
 
-Public surface of `openai_codex` for Codex workflows.
+Public surface of `openai_codex` for noname workflows.
 
 Turn streams are routed by turn ID so one client can consume multiple active turns concurrently.
 Thread starts default to `ApprovalMode.auto_review`; turn starts accept an optional `approval_mode` override.
@@ -9,9 +9,9 @@ Thread starts default to `ApprovalMode.auto_review`; turn starts accept an optio
 
 ```python
 from openai_codex import (
-    Codex,
-    AsyncCodex,
-    CodexConfig,
+    noname,
+    Asyncnoname,
+    nonameConfig,
     ApprovalMode,
     Sandbox,
     ChatgptLoginHandle,
@@ -50,12 +50,12 @@ from openai_codex.types import (
 
 - Version: `openai_codex.__version__`
 - Requires Python >= 3.10
-- Public Codex protocol value and event types live in `openai_codex.types`
+- Public noname protocol value and event types live in `openai_codex.types`
 
-## Codex (sync)
+## noname (sync)
 
 ```python
-Codex(config: CodexConfig | None = None)
+noname(config: nonameConfig | None = None)
 ```
 
 Properties/methods:
@@ -78,7 +78,7 @@ Properties/methods:
 Context manager:
 
 ```python
-with Codex() as codex:
+with noname() as codex:
     ...
 ```
 
@@ -98,7 +98,7 @@ select a style; model instructions define the tone.
 
 Python `None` or omitting the option leaves it unset. Explicit `Personality.none`
 (wire value `"none"`) strips the literal `# Personality` section the next time
-Codex prepares instructions from the model catalog, such as when starting a
+noname prepares instructions from the model catalog, such as when starting a
 thread or switching models. It does not change explicitly supplied base
 instructions or rewrite an existing thread's instructions when resuming or
 starting a turn. Either legacy value can replace a previous `Personality.none`
@@ -110,20 +110,20 @@ compatibility. This field is deprecated and always `False` on the current
 app-server; it describes selectable personality, not the separate
 `Personality.none` opt-out.
 
-## AsyncCodex (async parity)
+## Asyncnoname (async parity)
 
 ```python
-AsyncCodex(config: CodexConfig | None = None)
+Asyncnoname(config: nonameConfig | None = None)
 ```
 
 Preferred usage:
 
 ```python
-async with AsyncCodex() as codex:
+async with Asyncnoname() as codex:
     ...
 ```
 
-`AsyncCodex` initializes lazily. Context entry is the standard path because it
+`Asyncnoname` initializes lazily. Context entry is the standard path because it
 ensures startup and shutdown are paired explicitly.
 
 Properties/methods:
@@ -149,7 +149,7 @@ notes also apply to the async methods and model results.
 Async context manager:
 
 ```python
-async with AsyncCodex() as codex:
+async with Asyncnoname() as codex:
     ...
 ```
 
@@ -229,10 +229,10 @@ These options have the same behavior on sync and async `run(...)` and `turn(...)
 | `source: str \| None = None`              | Labels the caller that initiated a new turn, such as `"review_ui"`. This is metadata; it does not schedule work or grant authority. Ignored when input joins an active turn.                                 |
 
 `ExternalMessage`, `turn_service_tier`, `source`, and explicit `include_turns`
-on resume/fork require Codex CLI 0.151.0 or newer. The SDK raises `CodexError`
+on resume/fork require noname CLI 0.151.0 or newer. The SDK raises `nonameError`
 before sending these options to an older runtime, which would otherwise ignore
 them. Published SDK releases install a matching runtime automatically; when
-using `CodexConfig.codex_bin`, choose a compatible executable. Unversioned local
+using `nonameConfig.codex_bin`, choose a compatible executable. Unversioned local
 builds are checked lazily against their experimental schema before these options
 are sent. A custom `launch_args_override` must report a supported version.
 
@@ -241,9 +241,9 @@ are sent. A custom `launch_args_override` must report a supported version.
 Use `sandbox=` consistently on thread lifecycle methods and turns:
 
 ```python
-from openai_codex import Codex, Sandbox
+from openai_codex import noname, Sandbox
 
-with Codex() as codex:
+with noname() as codex:
     thread = codex.thread_start(sandbox=Sandbox.workspace_write)
     result = thread.run("Review the diff only.", sandbox=Sandbox.read_only)
 ```
@@ -254,7 +254,7 @@ Presets:
 - `Sandbox.workspace_write`: the normal default for projects with a recorded trust decision; read files and write inside the workspace and configured writable roots.
 - `Sandbox.full_access`: run without filesystem access restrictions.
 
-When `sandbox=` is omitted, Codex uses its configured default. A sandbox
+When `sandbox=` is omitted, noname uses its configured default. A sandbox
 passed to `run(...)` or `turn(...)` applies to that turn and subsequent turns.
 
 ## TurnHandle / AsyncTurnHandle
@@ -272,7 +272,7 @@ Other handles start when they join; use `thread.read(include_turns=True)` for ea
 Behavior notes:
 
 - `stream()` and `run()` consume only notifications for their own turn ID
-- one `Codex` instance can stream multiple active turns concurrently
+- one `noname` instance can stream multiple active turns concurrently
 
 ### AsyncTurnHandle
 
@@ -284,7 +284,7 @@ Behavior notes:
 Behavior notes:
 
 - `stream()` and `run()` consume only notifications for their own turn ID
-- one `AsyncCodex` instance can stream multiple active turns concurrently
+- one `Asyncnoname` instance can stream multiple active turns concurrently
 
 ## Inputs
 
@@ -360,7 +360,7 @@ request followed by an external notification.
 
 ## Public Types
 
-The SDK wrappers return and accept public Codex protocol models wherever possible:
+The SDK wrappers return and accept public noname protocol models wherever possible:
 
 ```python
 from openai_codex.types import (
@@ -411,9 +411,9 @@ from openai_codex import (
 ## Example
 
 ```python
-from openai_codex import Codex
+from openai_codex import noname
 
-with Codex() as codex:
+with noname() as codex:
     thread = codex.thread_start(model="gpt-5.4", config={"model_reasoning_effort": "high"})
     result = thread.run("Say hello in one sentence.")
     print(result.final_response)

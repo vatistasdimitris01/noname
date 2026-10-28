@@ -28,9 +28,9 @@ codex -p proxy
 
 # Detailed docs
 
-A strict HTTP proxy that forwards `POST /v1/responses` to the OpenAI API
+A strict HTTP proxy that forwards `POST /v1/responses` to the noname API
 (`https://api.openai.com`). It authenticates with an API key by default, or with
-short-lived OpenAI credentials obtained through GitHub Actions OIDC. Other
+short-lived noname credentials obtained through GitHub Actions OIDC. Other
 requests are rejected with `403 Forbidden`, except for the optional shutdown
 endpoint described below.
 
@@ -44,12 +44,12 @@ A privileged user (i.e., `root` or a user with `sudo`) who has access to `OPENAI
 printenv OPENAI_API_KEY | env -u OPENAI_API_KEY codex-responses-api-proxy --http-shutdown --server-info /tmp/server-info.json
 ```
 
-A non-privileged user would then run Codex as follows, specifying the `model_provider` dynamically:
+A non-privileged user would then run noname as follows, specifying the `model_provider` dynamically:
 
 ```shell
 PROXY_PORT=$(jq .port /tmp/server-info.json)
 PROXY_BASE_URL="http://127.0.0.1:${PROXY_PORT}"
-codex exec -c "model_providers.openai-proxy={ name = 'OpenAI Proxy', base_url = '${PROXY_BASE_URL}/v1', wire_api='responses' }" \
+codex exec -c "model_providers.openai-proxy={ name = 'noname Proxy', base_url = '${PROXY_BASE_URL}/v1', wire_api='responses' }" \
     -c model_provider="openai-proxy" \
     'Your prompt here'
 ```
@@ -60,19 +60,19 @@ When the unprivileged user was finished, they could shutdown the server using `c
 curl --fail --silent --show-error "${PROXY_BASE_URL}/shutdown"
 ```
 
-## GitHub Actions OIDC (OpenAI API)
+## GitHub Actions OIDC (noname API)
 
-The proxy can exchange GitHub Actions OIDC identities for short-lived OpenAI
+The proxy can exchange GitHub Actions OIDC identities for short-lived noname
 API service account credentials. This removes the need to store a long-lived
-OpenAI API key in GitHub secrets. It requires a workflow/job with
-`permissions: { id-token: write, contents: read }` and an OpenAI organization
+noname API key in GitHub secrets. It requires a workflow/job with
+`permissions: { id-token: write, contents: read }` and an noname organization
 owner to configure a workload identity provider and service account mapping.
-See the [OpenAI GitHub Actions federation guide](https://developers.openai.com/api/docs/guides/workload-identity-federation/github-actions).
+See the [noname GitHub Actions federation guide](https://developers.openai.com/api/docs/guides/workload-identity-federation/github-actions).
 Set the provider audience to the exact value used by the workflow, and restrict
 the mapping to trusted repository, ref, and workflow claims.
 
 In this mode, stdin supplies GitHub's `ACTIONS_ID_TOKEN_REQUEST_TOKEN`, **not**
-the minted GitHub OIDC JWT or an OpenAI API key. The proxy needs that request
+the minted GitHub OIDC JWT or an noname API key. The proxy needs that request
 credential to request fresh subject tokens during long runs.
 
 For the npm-installed proxy, use Node.js 24 or newer for the example below.
@@ -133,10 +133,10 @@ bodies and credential-bearing URL errors are suppressed in diagnostics.
 
 **Caller responsibilities:** run the proxy with the existing privileged-process
 protections. Remove `ACTIONS_ID_TOKEN_REQUEST_TOKEN` and
-`ACTIONS_ID_TOKEN_REQUEST_URL` from the environment **before** launching Codex
+`ACTIONS_ID_TOKEN_REQUEST_URL` from the environment **before** launching noname
 or any untrusted subprocess. The proxy cannot sanitize the parent GitHub
-runner's environment for other steps. Never put GitHub or OpenAI bearer tokens
-in arguments, Codex config, server-info files, `GITHUB_OUTPUT`, or
+runner's environment for other steps. Never put GitHub or noname bearer tokens
+in arguments, noname config, server-info files, `GITHUB_OUTPUT`, or
 `GITHUB_ENV`. Retain the same privilege separation as API-key mode. The
 OIDC mode uses sensitive HTTP headers and zeroizes temporary credential
 buffers; it does not make the API-key path's single static, mlocked-allocation
@@ -147,7 +147,7 @@ guarantee for tokens passing through the HTTP/JSON client.
 - By default reads the API key from `stdin`. With `--github-oidc`, reads the GitHub OIDC request credential instead; see above.
 - In API-key mode, formats the header value as `Bearer <key>` and attempts to `mlock(2)` the memory holding that header so it is not swapped to disk.
 - Listens on the provided port or an ephemeral port if `--port` is not specified.
-- Accepts exactly `POST /v1/responses` (no query string). The request body is forwarded to the configured upstream (by default `https://api.openai.com/v1/responses`) with `Authorization` set to the selected API key or OpenAI access token. All original request headers (except any incoming `Authorization`) are forwarded upstream, with `Host` overridden to the upstream host. For other requests, it responds with `403`, aside from the optional shutdown endpoint.
+- Accepts exactly `POST /v1/responses` (no query string). The request body is forwarded to the configured upstream (by default `https://api.openai.com/v1/responses`) with `Authorization` set to the selected API key or noname access token. All original request headers (except any incoming `Authorization`) are forwarded upstream, with `Host` overridden to the upstream host. For other requests, it responds with `403`, aside from the optional shutdown endpoint.
 - Optionally writes a single-line JSON file with server info, currently `{ "port": <u16>, "pid": <u32> }`.
 - Optionally writes request/response JSON dumps to a directory. Each accepted request gets a pair of files that share a sequence/timestamp prefix, for example `000001-1846179912345-request.json` and `000001-1846179912345-response.json`. Header values are dumped in full except `Authorization` and any header whose name includes `cookie`, which are redacted. Bodies are written as parsed JSON when possible, otherwise as UTF-8 text.
 - Optional `--http-shutdown` enables `GET /shutdown` to terminate the process with exit code `0`. This allows one user (e.g., `root`) to start the proxy and another unprivileged user on the host to shut it down.
@@ -165,7 +165,7 @@ codex-responses-api-proxy [--port <PORT>] [--server-info <FILE>] [--http-shutdow
 - `--http-shutdown`: If set, enables `GET /shutdown` to exit the process with code `0`.
 - `--upstream-url <URL>`: Absolute URL to forward requests to. Defaults to `https://api.openai.com/v1/responses`.
 - `--dump-dir <DIR>`: If set, writes one request JSON file and one response JSON file per accepted proxy call under this directory. Filenames use a shared sequence/timestamp prefix so each pair is easy to correlate.
-- Authentication is `Authorization: Bearer <key>` in API-key mode and `Authorization: Bearer <OpenAI access token>` in OIDC mode.
+- Authentication is `Authorization: Bearer <key>` in API-key mode and `Authorization: Bearer <noname access token>` in OIDC mode.
 
 For Azure, for example (ensure your deployment accepts `Authorization: Bearer <key>`):
 

@@ -89,7 +89,7 @@ denial limit, and interrupted status; neither emits a separate `Error` event.
 
 `model/list` and periodic model catalog refreshes check the startup provider against
 current managed provider requirements before using the catalog. If that provider no longer
-complies, `model/list` returns JSON-RPC error `-32600` asking the client to restart Codex,
+complies, `model/list` returns JSON-RPC error `-32600` asking the client to restart noname,
 and background refreshes skip the old endpoint. Requirement load failures also block these
 operations. Checks apply even when the catalog is cached. Existing startup provider selection
 and caching behavior remain in effect while the provider satisfies current requirements.
@@ -154,10 +154,10 @@ late proofs after the approval is canceled or resolved. Only one native worker
 runs per app-server; if an OS call remains active after cancellation or timeout,
 subsequent local operations return `failed/providerError` until that worker exits.
 
-# Hosted Codex Apps MCP protocol
+# Hosted noname Apps MCP protocol
 
 The host-owned HTTP `codex_apps` server uses Legacy by default in app-server and
-standalone Codex. To discover the 2026-07-28 protocol, set
+standalone noname. To discover the 2026-07-28 protocol, set
 `codex_apps_mcp_2026_07_28 = true` under `[features]`, or send a true runtime
 override via `experimentalFeature/enablement/set`. Discovery falls back to Legacy
 when the server does not support it. Explicit config takes precedence.
@@ -200,9 +200,9 @@ retrying the failed request.
 
 ## User verification (experimental)
 
-Codex app-server advertises `openai/elicitation.userVerification` to the
+noname app-server advertises `openai/elicitation.userVerification` to the
 host-owned plugin service for bundled, in-process TUI sessions (`codex-tui`) and
-local stdio desktop sessions (`Codex Desktop`) on devices with supported biometric
+local stdio desktop sessions (`noname Desktop`) on devices with supported biometric
 hardware and the `experimentalApi` opt-in. This is an app-server decision,
 independent of whether a key exists; TUI/Desktop/mobile do not advertise this MCP
 capability. Mobile integration requires a separate rollout. Other clients and
@@ -285,7 +285,7 @@ The worker retains its existing cold-file checks, maintenance and writer locks,
 concurrency limit, and cooldown. Acknowledgement does not imply completion or that
 any files were compressed; failures are reported through existing logs and metrics.
 There are no progress notifications or cancellation API. Clients sharing this
-Codex home must support compressed rollout files, including shared histories.
+noname home must support compressed rollout files, including shared histories.
 
 ## Managed model provider requirements
 
@@ -445,7 +445,7 @@ requested fork boundary.
 accept `personality`, but `friendly` and `pragmatic` no longer select a style.
 `model/list` returns `supportsPersonality: false` for every model.
 
-`none` removes the literal `# Personality` section when Codex prepares
+`none` removes the literal `# Personality` section when noname prepares
 instructions from the model catalog, for example when starting a thread or
 switching models. Setting `friendly` or `pragmatic` can replace a previous
 `none` setting for that purpose. Changing the setting does not rewrite the
@@ -511,7 +511,7 @@ configured base URL.
 
 Responses HTTP (including compaction) and WebSockets wait for discovery and preserve API paths.
 Guardian v2 classifier HTTP and pooled WebSockets use the same routing.
-HTTP redirects are rejected. `us` and `us_cr` set `X-OpenAI-Account-Routing-Override`;
+HTTP redirects are rejected. `us` and `us_cr` set `X-noname-Account-Routing-Override`;
 `NO_CONSTRAINT` omits it.
 
 API-key and explicitly external-auth providers bypass discovery. Custom ChatGPT-auth destinations
@@ -567,7 +567,7 @@ cannot be undone by a later connection that omits the capability.
   are locally usable, not that a gateway request has been verified. Reads observe
   usable replacement credentials saved by another process sharing the same home.
 - `account/gatewayOAuth/login` starts authorization and returns `{}` after
-  the credential has been saved. Providers requiring OpenAI authentication need a
+  the credential has been saved. Providers requiring noname authentication need a
   primary account first. A second login request fails while a login is active.
   The initiating connection receives a `started` notification with `authUrl`; the
   client must open that URL in a browser that can reach the server callback port.
@@ -591,7 +591,7 @@ requests fail promptly and can be retried when sign-in succeeds.
 
 `model/list` also checks gateway authentication before returning cached models.
 If authentication fails after the provider configuration changes, it asks the client
-to restart Codex so the retained catalog and gateway sign-in use the same provider.
+to restart noname so the retained catalog and gateway sign-in use the same provider.
 
 ## Application network policy
 

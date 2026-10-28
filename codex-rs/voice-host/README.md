@@ -93,7 +93,7 @@ OS null device. Windows loads use only the DLL's directory and System32. Native
 libraries remain loaded until helper exit, even after partial initialization,
 because GStreamer registers process-global callbacks. The small private C ABI
 bootstrap does not expose native pointers to the parent or link native libraries
-into ordinary Codex. The existing `libloading` dependency supplies OS loading.
+into ordinary noname. The existing `libloading` dependency supplies OS loading.
 Media/privacy controls, a full media binding layer and actual audio proof remain
 integration stages; a prepared runtime is required for packaged lifecycle calls.
 

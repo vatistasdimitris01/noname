@@ -5,7 +5,7 @@
 
 `codex-app-server-daemon` backs the machine-readable `codex app-server`
 lifecycle commands used by remote clients such as the desktop and mobile apps.
-It is intended for Codex instances launched over SSH, including fresh developer
+It is intended for noname instances launched over SSH, including fresh developer
 machines that should expose app-server with `remote_control` enabled.
 
 ## Platform support

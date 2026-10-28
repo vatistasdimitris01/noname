@@ -2,8 +2,8 @@
 
 Each example folder contains runnable versions:
 
-- `sync.py` (public sync surface: `Codex`)
-- `async.py` (public async surface: `AsyncCodex`)
+- `sync.py` (public sync surface: `noname`)
+- `async.py` (public async surface: `Asyncnoname`)
 
 All examples intentionally use only public SDK exports from `openai_codex`
 and `openai_codex.types`.

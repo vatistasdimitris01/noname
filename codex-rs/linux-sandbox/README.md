@@ -2,7 +2,7 @@
 
 This crate is responsible for producing:
 
-- a `codex-linux-sandbox` standalone executable for Linux that is bundled with the Node.js version of the Codex CLI
+- a `codex-linux-sandbox` standalone executable for Linux that is bundled with the Node.js version of the noname CLI
 - a lib crate that exposes the business logic of the executable as `run_main()` so that
   - the `codex-exec` CLI can check if its arg0 is `codex-linux-sandbox` and, if so, execute as if it were `codex-linux-sandbox`
   - this should also be true of the `codex` multitool CLI
@@ -13,18 +13,18 @@ seccomp filters; it also retains the legacy Landlock filesystem implementation.
 `src/linux_run_main.rs` coordinates these stages through `LinuxSandboxCommand`.
 End-to-end coverage lives in `tests/suite/sandbox.rs` and the other suite modules.
 
-On Linux, Codex prefers the first `bwrap` found on `PATH`
+On Linux, noname prefers the first `bwrap` found on `PATH`
 outside the current working directory whenever it is available. If `bwrap` is
 present but too old to support
 `--argv0`, the helper keeps using system bubblewrap and switches to a
 no-`--argv0` compatibility path for the inner re-exec. If `bwrap` is missing,
 the helper falls back to the bundled `codex-resources/bwrap` binary shipped
-with Codex.
-Codex also surfaces a startup warning when `bwrap` is missing so users know it
-is falling back to the bundled helper. Codex surfaces the same startup warning
+with noname.
+noname also surfaces a startup warning when `bwrap` is missing so users know it
+is falling back to the bundled helper. noname surfaces the same startup warning
 path when bubblewrap cannot create user namespaces. WSL2 follows the normal
 Linux bubblewrap path. WSL1 is not supported for bubblewrap sandboxing because
-it cannot create the required user namespaces, so Codex rejects sandboxed shell
+it cannot create the required user namespaces, so noname rejects sandboxed shell
 commands that would enter the bubblewrap path.
 
 **Current Behavior**
@@ -37,12 +37,12 @@ commands that would enter the bubblewrap path.
   no-`--argv0` compatibility path for the inner re-exec.
 - If `bwrap` is missing, the helper falls back to the bundled
   `codex-resources/bwrap` path.
-- If `bwrap` is missing, Codex also surfaces a startup warning instead of
+- If `bwrap` is missing, noname also surfaces a startup warning instead of
   printing directly from the sandbox helper.
-- If bubblewrap cannot create user namespaces, Codex surfaces a startup warning
+- If bubblewrap cannot create user namespaces, noname surfaces a startup warning
   instead of waiting for a runtime sandbox failure.
 - WSL2 uses the normal Linux bubblewrap path.
-- WSL1 is not supported for bubblewrap sandboxing; Codex rejects sandboxed
+- WSL1 is not supported for bubblewrap sandboxing; noname rejects sandboxed
   shell commands that would require the bubblewrap path before invoking `bwrap`.
 - Filesystem-restricted execution requires bubblewrap. The legacy Landlock
   option is rejected for these policies because it cannot isolate app-server

@@ -1,3 +1,3 @@
-# Codex CLI
+# noname (codex-rs)
 
-[**Codex CLI Documentation**](https://developers.openai.com/codex/cli)
+Ollama-only fork. See root README.

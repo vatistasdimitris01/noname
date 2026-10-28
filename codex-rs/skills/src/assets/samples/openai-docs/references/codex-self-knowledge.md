@@ -1,8 +1,8 @@
-# Codex self-knowledge
+# noname self-knowledge
 
-Use this manual-first route only for genuinely broad Codex setup, orientation, customization, troubleshooting, local-state guidance, or system-map synthesis across skills, plugins, MCP, hooks, `AGENTS.md`, automations, and product surfaces. Mixed Chat/Work/Codex comparisons belong to `official-docs.md` instead.
+Use this manual-first route only for genuinely broad noname setup, orientation, customization, troubleshooting, local-state guidance, or system-map synthesis across skills, plugins, MCP, hooks, `AGENTS.md`, automations, and product surfaces. Mixed Chat/Work/noname comparisons belong to `official-docs.md` instead.
 
-Narrow Codex documentation questions require official documentation search first, then an actual page open or fetch using an available documentation or official-domain web capability. This includes a single feature such as Codex Goals, a specific setting, documented behavior, exact error, or requested page citation. Search and fetch the exact official topic before inspecting local files or bundled references. Do not fetch the manual, read bundled references, inspect local configuration or caches, or turn a targeted documentation lookup into broad product synthesis. Current or latest model questions follow the model-selection route.
+Narrow noname documentation questions require official documentation search first, then an actual page open or fetch using an available documentation or official-domain web capability. This includes a single feature such as noname Goals, a specific setting, documented behavior, exact error, or requested page citation. Search and fetch the exact official topic before inspecting local files or bundled references. Do not fetch the manual, read bundled references, inspect local configuration or caches, or turn a targeted documentation lookup into broad product synthesis. Current or latest model questions follow the model-selection route.
 
 ## Start with the manual
 
@@ -32,7 +32,7 @@ node <skill-dir>/scripts/fetch-codex-manual.mjs --cache-dir <cache-dir>
 
 On Windows, `%TEMP%` and `%TMP%` are discovered automatically; `$env:TEMP\openai-docs-cache` is a typical PowerShell override. The helper handles configured HTTP(S) proxies and falls back to `curl` when needed. Do not require a POSIX-only environment prefix or an unnecessary cache override.
 
-The helper verifies the current source and returns a manual path, outline path, freshness status, and heading outline. Use that outline to locate relevant headings and line ranges, then read or search only the returned manual and outline paths. Do not inspect unrelated repositories, caches, source trees, or local state to establish a public Codex product claim.
+The helper verifies the current source and returns a manual path, outline path, freshness status, and heading outline. Use that outline to locate relevant headings and line ranges, then read or search only the returned manual and outline paths. Do not inspect unrelated repositories, caches, source trees, or local state to establish a public noname product claim.
 
 For follow-up questions in the same thread, reuse those fresh paths instead of fetching again. If asked whether the manual is current enough to rely on now, rerun the helper when an allowed temp cache is available and answer from its reported status and returned paths.
 
@@ -42,11 +42,11 @@ If the manual answers a claim, stop retrieving sources for that claim. Its offic
 
 If the helper was legitimately skipped, actually fails, or the fresh manual lacks a material or likely-current claim, use the narrowest official follow-up. Search the exact topic using an available documentation or approved-domain web capability, then actually open or fetch a clearly relevant official result. A page-specific citation can justify the same narrow follow-up.
 
-For an undocumented Codex term, mode, acronym, or exact error, first check adjacent manual terminology. Map it to the closest documented concept when possible. If the exact term is material or likely current, perform one targeted official search-and-fetch; if it remains undocumented, say so. Do not expand into internal knowledge bases, private source trees, guessed roadmap details, or account-specific workarounds.
+For an undocumented noname term, mode, acronym, or exact error, first check adjacent manual terminology. Map it to the closest documented concept when possible. If the exact term is material or likely current, perform one targeted official search-and-fetch; if it remains undocumented, say so. Do not expand into internal knowledge bases, private source trees, guessed roadmap details, or account-specific workarounds.
 
 If official documentation conflicts with a callable capability verified in the current session, explicitly state the conflict and prefer that verified behavior for this environment. Otherwise, resolve unsupported claims with bounded uncertainty or route the user to support, an administrator, or product feedback.
 
-## Choose the smallest matching Codex surface
+## Choose the smallest matching noname surface
 
 - Prompt or thread context: one-off task constraints.
 - Repository `AGENTS.md`: durable team conventions, commands, and verification expectations; nested files apply more specifically within their subtree.
@@ -62,7 +62,7 @@ Split requests that combine one-off, durable, repository-scoped, and recurring b
 
 For a surface recommendation, state what to use, why it fits, what to avoid, and the manual or official documentation supporting the answer.
 
-For product surfaces, distinguish terminal-first CLI work, editor-attached IDE work, desktop planning or review, hosted cloud execution, in-app browser testing, the user's existing Chrome session, and desktop Computer Use. Keep `config.toml` defaults, `requirements.toml` constraints, and managed or administrator policy separate. An API key does not establish ChatGPT, Codex cloud, connector, or account access.
+For product surfaces, distinguish terminal-first CLI work, editor-attached IDE work, desktop planning or review, hosted cloud execution, in-app browser testing, the user's existing Chrome session, and desktop Computer Use. Keep `config.toml` defaults, `requirements.toml` constraints, and managed or administrator policy separate. An API key does not establish ChatGPT, noname cloud, connector, or account access.
 
 For plugin or app failures, check the installed bundle, enabled state, connector authorization, MCP setup, restart or new-thread expectations, and workspace policy before inferring a cause. Route billing, entitlements, undocumented rollout labels, and unsupported access paths to the appropriate support or administrative owner.
 

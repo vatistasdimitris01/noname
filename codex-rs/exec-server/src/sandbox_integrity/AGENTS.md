@@ -19,7 +19,7 @@ Supported backends are Seatbelt, bubblewrap, and MXC; legacy Windows is out of s
   results. Never emit paths, environment values, or error text.
   A missing metrics client disables emission, never the checks themselves.
   Use the process-global metrics client; separately injected clients in programs
-  embedding Codex are outside this phase's scope.
+  embedding noname are outside this phase's scope.
 
 ## Deliberate approximation
 

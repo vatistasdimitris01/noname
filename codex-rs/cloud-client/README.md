@@ -1,4 +1,4 @@
-# Codex cloud client
+# noname cloud client
 
 Reusable Rust client for native ThreadService gRPC over HTTP/2, with no TUI,
 conventional app-server or private monorepo dependency. This slice supports

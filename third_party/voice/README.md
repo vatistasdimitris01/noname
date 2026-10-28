@@ -2,7 +2,7 @@
 
 This stage pins and prepares sources for a privately bundled, GStreamer-based
 audio runtime, including its native dependencies and build tools. It does not
-compile native libraries, link them into Codex or enable voice.
+compile native libraries, link them into noname or enable voice.
 
 `sources.json` records the versions, URLs and SHA-256 digests of 11 archives:
 
@@ -64,7 +64,7 @@ Consumers must restrict `PKG_CONFIG_LIBDIR` to the SDK, clear `PKG_CONFIG_PATH`,
 and use `pkg-config --define-prefix` for libffi/PCRE2/zlib metadata too. Only the
 required native metadata is exported; capture Opus uses `opusic-sys`. Native
 library loader paths are not changed by SDK export. These build inputs do not replace the
-separate runtime projection and are never copied into users' Codex packages.
+separate runtime projection and are never copied into users' noname packages.
 Final helper linkage and moved-package execution remain separate integration
 work; exporting an SDK does not enable voice.
 
@@ -159,7 +159,7 @@ with pkg-config restricted to this prefix. Only system ABI libraries/frameworks
 may remain external; runtime closure inspection must verify that independently.
 `//third_party/voice:build_inputs` exposes the recipe and source inputs to Bazel.
 Neither this filegroup nor a successful prefix build proves final Cargo/Bazel
-linkage, safe private runtime loading, or an installed voice-capable Codex package.
+linkage, safe private runtime loading, or an installed voice-capable noname package.
 
 ## Private macOS runtime projection
 
@@ -256,14 +256,14 @@ codex-internal) verifies the pinned archive and every input size and SHA-512
 digest, then runs the offline installer against its signed metadata. ARM64 uses
 `aarch64-pc-windows-msvc` and the same Cygwin x64 tools under emulation. The
 installed tool tree stays in the CI temporary directory and is never added to
-a Codex package. The upstream mirror's signed metadata changes over time, so
+a noname package. The upstream mirror's signed metadata changes over time, so
 the archived snapshot must be supplied separately. Private CI validates this
 public bootstrap against its existing pinned archive. Public release CI obtains
 the same hash-pinned build inputs from the public `openai/codex` release named
 by `voice-cygwin-snapshot.json`. That release also makes the corresponding
 upstream source archives available under `cygwin-build-sources.tar`, with its
 own size and SHA-256 pin. These Cygwin tools run only on the build runner;
-neither archive is included in the user's Codex package.
+neither archive is included in the user's noname package.
 
 The default
 `windows_installed_tools` label setting is empty and fails if a Windows action
@@ -296,7 +296,7 @@ Python and pkgconf match the native architecture. Complete support, include and
 library files are declared, and installed entrypoints must match the supplied
 target/architecture manifest and belong to that declared tree. This does not
 turn caller-provided files into authenticated inputs: provisioning retains that
-responsibility. These build tools must never enter shipped Codex packages.
+responsibility. These build tools must never enter shipped noname packages.
 
 Windows link inputs pair SDK import libraries with the corresponding prepared
 DLLs. DLLs, plugins and the receipt remain under the normal native-link runfiles

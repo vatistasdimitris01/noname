@@ -1,10 +1,10 @@
 # Native Windows MXC sandbox
 
-This crate routes a command through the current Codex executable and directly
+This crate routes a command through the current noname executable and directly
 into Microsoft's MXC `BaseContainerRunner`. It requires a working Windows
 process security environment (PSEC). It never invokes MXC's AppContainer
 dispatcher, edits host ACLs, creates sandbox users, runs setup, or requests
-elevation. The existing Codex Windows sandboxes remain separate backends.
+elevation. The existing noname Windows sandboxes remain separate backends.
 
 Windows executors record `codex.windows_mxc.available` once per process with an
 `available=true|false` tag. This measures runtime availability independently of
@@ -19,7 +19,7 @@ fails before launch.
 The wrapper inherits the command's pipes or ConPTY console. MXC creates its
 child suspended, assigns a kill-on-close job before resuming it, and retains
 the native policy through workload completion. Filesystem permissions come
-from the canonical Codex permission profile, including protected metadata
+from the canonical noname permission profile, including protected metadata
 carveouts. Supported managed network access allows IPv4 and IPv6 loopback
 clients and servers, including the dedicated proxy listeners, while denying
 direct non-loopback egress and general inbound network access.
@@ -34,7 +34,7 @@ grants. See the [BaseContainer path-precedence rules](https://github.com/microso
 Do not call MXC's shared `normalize_object_conflicts` before or after volume
 expansion. Its identity preflight is used by mount-based backends and can reject
 an otherwise usable Windows policy when a network share does not support
-`FileIdInfo`, or a protected deny path cannot be opened for metadata. Codex sends
+`FileIdInfo`, or a protected deny path cannot be opened for metadata. noname sends
 explicit path grants to BaseContainer without requiring that additional lookup.
 We intentionally accept two limitations:
 
@@ -60,7 +60,7 @@ rollback may require legacy setup. `config/read` retains the configured sandbox;
 ## Launch contract
 
 `create_command_args()` wraps the command like the Seatbelt backend, using the
-executor's Codex executable as the native SDK helper. It carries one typed
+executor's noname executable as the native SDK helper. It carries one typed
 request: the canonical `PermissionProfile`, policy cwd, proxy context, and exact
 argv. The helper inherits command cwd, environment, and stdio from the shared
 process path; policy cwd can differ from command cwd.

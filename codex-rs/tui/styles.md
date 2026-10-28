@@ -20,7 +20,7 @@
   colors remain the fallback for limited palettes.
 - **Success and additions:** Use ANSI `green`.
 - **Errors, failures and deletions:** Use ANSI `red`.
-- **Codex:** Use ANSI `magenta`.
+- **noname:** Use ANSI `magenta`.
 
 # Avoid
 

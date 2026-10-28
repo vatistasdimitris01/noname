@@ -3,14 +3,14 @@
 This directory wires the `v8` crate to exact-version Bazel inputs.
 Bazel consumer builds use:
 
-- Codex-published sandbox archive/binding pairs on Darwin, GNU/musl Linux,
+- noname-published sandbox archive/binding pairs on Darwin, GNU/musl Linux,
   and Windows MSVC (x64 and arm64), with checksums pinned from the trusted
   release manifests
 - source-built V8 archives on Windows GNU
 
 Local Cargo builds still use upstream prebuilt `rusty_v8` archives by default.
 Selected Cargo CI, release, and package builds override
-`RUSTY_V8_ARCHIVE`/`RUSTY_V8_SRC_BINDING_PATH` with Codex release assets. Bazel
+`RUSTY_V8_ARCHIVE`/`RUSTY_V8_SRC_BINDING_PATH` with noname release assets. Bazel
 sets those variables independently in `MODULE.bazel`, selecting the pair above
 for its consumers. All Bazel compilation modes use the same published V8
 release archive on supported platforms.
@@ -44,7 +44,7 @@ Use this as the maintainer flow for a version bump:
    Then refresh the matching checksum manifest and generated checksums below.
 3. Publish a release-candidate PR and validate that `v8-canary` passes.
 4. If the canary is green, publish the release tag and release build.
-5. Independently verify the published Codex-built checksum manifests and record
+5. Independently verify the published noname-built checksum manifests and record
    their SHA-256 digests in
    `third_party/v8/rusty_v8_<version>_release_manifests.sha256`.
 6. Once the release build completes, rerun the build on the candidate branch
@@ -109,7 +109,7 @@ The same run also builds the matching sandbox pair targets:
 The workflow also builds sandbox-enabled
 `x86_64-pc-windows-msvc` and `aarch64-pc-windows-msvc` archive/binding pairs
 from upstream `rusty_v8` source. Those ABI-specific outputs cannot be produced
-by Codex's Bazel Windows GNU toolchain.
+by noname's Bazel Windows GNU toolchain.
 
 The Bazel graph pins the same libc++, libc++abi, and llvm-libc source revisions
 used by `rusty_v8 v152.2.0`. The named release and sandbox-release pair targets
@@ -179,14 +179,14 @@ the exact resolved `v8` crate version in `codex-rs/Cargo.lock`.
 
 ## Source dependency ownership
 
-The Darwin, Linux GNU/musl and Windows source targets consume Codex-owned
+The Darwin, Linux GNU/musl and Windows source targets consume noname-owned
 Abseil, Highway, simdutf, ICU, fast_float, dragonbox and fp16 repositories.
 `dependencies.bzl` declares the pinned imports; the `*.BUILD.bazel` overlays
 here declare the targets V8 uses. Abseil, Highway and simdutf apply their C++ runtime
 settings through `dependency_config.bzl`; ICU defines its settings in its own
 overlay.
 
-`engine_repository.bzl` fetches the V8 source pin and installs Codex's engine
+`engine_repository.bzl` fetches the V8 source pin and installs noname's engine
 BUILD into `@v8`. Source filegroups are read from the pinned upstream BUILD
 each fetch, including added, removed or reordered groups. The importer rejects
 missing boundaries, malformed or empty sections, and new compiled targets. Only
@@ -195,7 +195,7 @@ overlays already supply them. `v8_binary` is valid V8 syntax, but compiled targe
 must be reviewed against the owned engine BUILD on an upgrade.
 The upstream `bazel/config` platform and CPU package is reused; only the CPU
 setting changes from a CLI flag to an internal setting. `v8_defs.patch` records
-that change and the Codex differences to upstream's `bazel/defs.bzl`:
+that change and the noname differences to upstream's `bazel/defs.bzl`:
 internal ABI/runtime settings, their visibility, libc++ headers/runtime, Windows
 compiler and linker settings, and snapshot generation. All engine rules,
 including Torque and V8's test configuration helpers, load from that file.

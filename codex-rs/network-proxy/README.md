@@ -1,6 +1,6 @@
 # codex-network-proxy
 
-`codex-network-proxy` is Codex's local network policy enforcement proxy. It runs:
+`codex-network-proxy` is noname's local network policy enforcement proxy. It runs:
 
 - an HTTP proxy (default `127.0.0.1:3128`)
 - a SOCKS5 proxy (default `127.0.0.1:8081`, enabled by default)
@@ -15,7 +15,7 @@ It enforces an allow/deny policy and a "limited" mode intended for read-only net
 
 ### 1) Configure
 
-`codex-network-proxy` reads from Codex's merged `config.toml` (via `codex-core` config loading).
+`codex-network-proxy` reads from noname's merged `config.toml` (via `codex-core` config loading).
 
 Network settings live under the selected permissions profile. Example config:
 
@@ -83,11 +83,11 @@ strip_request_headers = ["authorization"]
 
 ### 2) Run the proxy
 
-In a Codex permission profile, set `version = 2` on `[permissions.<profile>.network.mitm]`
+In a noname permission profile, set `version = 2` on `[permissions.<profile>.network.mitm]`
 before using scoped hooks or credential substitution. Older clients reject this table key,
 so rolling back cannot silently enable unconditional header injection.
 
-The proxy can also run without a full Codex permissions profile. Put the network policy in a
+The proxy can also run without a full noname permissions profile. Put the network policy in a
 standalone JSON file:
 
 ```json
@@ -198,7 +198,7 @@ the decider can auto-allow network requests originating from that command.
 
 ## OTEL Audit Events (embedded/managed)
 
-When `codex-network-proxy` is embedded in managed Codex runtime, policy decisions emit structured
+When `codex-network-proxy` is embedded in managed noname runtime, policy decisions emit structured
 OTEL-compatible events with `target=codex_otel.network_proxy`.
 
 Event name:
@@ -285,7 +285,7 @@ A trusted `aws_sigv4` action pairs a `placeholder_access_key_id` with a real
 three reference files or environment variables in the proxy process. Resolve them
 at startup and replace the proxy installation to rotate them.
 
-For local Codex, enable `credential_masking = true` under `[features]` in
+For local noname, enable `credential_masking = true` under `[features]` in
 `config.toml` and set `placeholder_access_key_id = "CODEXMASKEDWORKSPACE"` on the
 proxy action. Local managed commands receive the dummy access key, secret and,
 for temporary credentials, session token in their standard AWS environment.

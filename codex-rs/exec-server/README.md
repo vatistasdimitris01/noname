@@ -68,14 +68,14 @@ Disconnecting either side closes its peer and resets the remote stream. The
 existing harness reconnect flow can then resume a retained destination session.
 The forwarder does not replay requests or persist execution state, so recovery
 is limited by the destination's session and process-output retention.
-It uses the standard Codex ChatGPT sign-in state; run `codex login` first when
+It uses the standard noname ChatGPT sign-in state; run `codex login` first when
 remote registration needs authentication. Containerized callers that receive an
 Agent Identity JWT in `CODEX_ACCESS_TOKEN` can opt into that auth path with
-`--use-agent-identity-auth`; Codex then registers an Agent task and sends the
+`--use-agent-identity-auth`; noname then registers an Agent task and sends the
 derived AgentAssertion headers on the registry request.
 
 Alternatively, API users can instead use `CODEX_API_KEY`;
-Codex sends it as a bearer token on the registration request. For example:
+noname sends it as a bearer token on the registration request. For example:
 
 ```sh
 CODEX_API_KEY="$OPENAI_API_KEY" \
@@ -106,7 +106,7 @@ The AWS SDK default credential and region chains are used when `--aws-profile`
 or `--aws-region` is omitted. The signing service defaults to `execute-api`.
 Direct mode registers `direct_jsonrpc_v1` through the AWS-owned
 `/cloud/environment/{environment_id}/direct/register` endpoint and carries plain
-exec-server JSON-RPC over the authenticated WebSocket. The existing Codex Noise
+exec-server JSON-RPC over the authenticated WebSocket. The existing noname Noise
 registration endpoint remains unchanged. Production deployments must use TLS
 (`https`/`wss`).
 
@@ -510,10 +510,10 @@ The crate exports:
 Callers must pass `ExecServerRuntimeOptions` and an explicitly configured
 `HttpClientFactory` to `run_main()`. The top-level `codex exec-server` command
 builds the runtime options from the `codex` arg0 dispatch state and startup flags,
-and resolves its HTTP client factory from the effective Codex configuration.
+and resolves its HTTP client factory from the effective noname configuration.
 `RemoteEnvironmentConfig::new(...)` also takes the auth provider and HTTP client
 factory that remote registration mode should use; the CLI builds the auth
-provider from Codex auth state before starting remote mode.
+provider from noname auth state before starting remote mode.
 
 `--proxy-private-ips-via-upstream` (or
 `CODEX_EXEC_SERVER_PROXY_PRIVATE_IPS_VIA_UPSTREAM=true`) allows permitted private IP
