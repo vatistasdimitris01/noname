@@ -1102,6 +1102,8 @@ fn write_ollama_catalog(models: &[String]) -> std::io::Result<std::path::PathBuf
                 "slug": slug,
                 "display_name": slug,
                 "description": null,
+                "base_instructions":
+                    "You are a coding agent in the noname terminal UI. Use the provided tools only.",
                 "default_reasoning_level": null,
                 "supported_reasoning_levels": [],
                 "shell_type": "unified_exec",
