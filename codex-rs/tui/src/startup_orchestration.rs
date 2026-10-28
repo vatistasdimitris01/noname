@@ -496,6 +496,31 @@ pub(super) async fn run_main_inner(
 
     let additional_dirs = cli.add_dir.clone();
 
+    // noname: list every locally installed Ollama model in the picker. Generate a
+    // model catalog from Ollama's /api/tags and load it through the existing
+    // `model_catalog_json` configuration pathway; this fully bypasses network
+    // model-catalog fetching.
+    if !cli_kv_overrides
+        .iter()
+        .any(|(key, _)| key == "model_catalog_json")
+    {
+        let factory =
+            codex_http_client::HttpClientFactory::new(codex_http_client::OutboundProxyPolicy::ReqwestDefault);
+        let catalog_path = match OllamaClient::try_from_local_defaults(factory).await {
+            Ok(client) => match client.fetch_models().await {
+                Ok(models) if !models.is_empty() => write_ollama_catalog(&models).ok(),
+                _ => None,
+            },
+            Err(_) => None,
+        };
+        if let Some(path) = catalog_path {
+            cli_kv_overrides.push((
+                "model_catalog_json".to_string(),
+                toml::Value::String(path.to_string_lossy().into_owned()),
+            ));
+        }
+    }
+
     let mut overrides = ConfigOverrides {
         model,
         approval_policy,
@@ -1065,4 +1090,39 @@ pub(super) async fn run_main_inner(
     }
 
     app_result
+}
+
+/// Serialize installed Ollama models into a model catalog JSON file for the picker.
+fn write_ollama_catalog(models: &[String]) -> std::io::Result<std::path::PathBuf> {
+    let entries: Vec<serde_json::Value> = models
+        .iter()
+        .enumerate()
+        .map(|(index, slug)| {
+            serde_json::json!({
+                "slug": slug,
+                "display_name": slug,
+                "description": null,
+                "default_reasoning_level": null,
+                "supported_reasoning_levels": [],
+                "shell_type": "unified_exec",
+                "visibility": "list",
+                "supported_in_api": true,
+                "priority": index,
+                "availability_nux": null,
+                "upgrade": null,
+                "support_verbosity": false,
+                "default_verbosity": null,
+                "apply_patch_tool_type": null,
+                "truncation_policy": {"mode": "tokens", "limit": 100000},
+                "experimental_supported_tools": []
+            })
+        })
+        .collect();
+    let path = std::env::temp_dir().join(format!("noname-models-{}.json", std::process::id()));
+    let body = serde_json::json!({ "models": entries });
+    std::fs::write(
+        &path,
+        serde_json::to_vec(&body).map_err(std::io::Error::other)?,
+    )?;
+    Ok(path)
 }

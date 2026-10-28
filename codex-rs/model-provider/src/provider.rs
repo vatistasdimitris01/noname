@@ -649,7 +649,7 @@ impl ModelProvider for ConfiguredModelProvider {
         codex_home: PathBuf,
         config_model_catalog: Option<ModelsResponse>,
     ) -> SharedModelsManager {
-        self.create_models_manager(config_model_catalog, ModelsCacheConfig::Disk { codex_home })
+        self.create_models_manager(config_model_catalog, ModelsCacheConfig::Disabled)
     }
 
     fn models_manager_without_cache(

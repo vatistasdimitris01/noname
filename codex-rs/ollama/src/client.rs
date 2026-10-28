@@ -22,9 +22,10 @@ use codex_http_client::RouteAwareRequestError;
 use codex_model_provider_info::ModelProviderInfo;
 use codex_model_provider_info::OLLAMA_OSS_PROVIDER_ID;
 #[cfg(test)]
-use codex_model_provider_info::WireApi;
-#[cfg(test)]
 use codex_model_provider_info::create_oss_provider_with_base_url;
+use codex_model_provider_info::WireApi;
+use codex_model_provider_info::create_oss_provider;
+use codex_model_provider_info::DEFAULT_OLLAMA_PORT;
 
 const OLLAMA_CONNECTION_ERROR: &str = "No running Ollama server detected. Start it with: `ollama serve` (after installing). Install instructions: https://github.com/ollama/ollama?tab=readme-ov-file#ollama";
 const OLLAMA_CONNECTION_TIMEOUT: Duration = Duration::from_secs(5);
@@ -55,6 +56,16 @@ impl OllamaClient {
             })?;
 
         Self::try_from_provider(provider, config.http_client_factory()).await
+    }
+
+    /// Construct a client for the default local Ollama server without loading a full
+    /// Config. Honors the same `CODEX_OSS_BASE_URL` / `CODEX_OSS_PORT` overrides as the
+    /// built-in provider definition.
+    pub async fn try_from_local_defaults(
+        http_client_factory: HttpClientFactory,
+    ) -> io::Result<Self> {
+        let provider = create_oss_provider(DEFAULT_OLLAMA_PORT, WireApi::Responses);
+        Self::try_from_provider(&provider, http_client_factory).await
     }
 
     #[cfg(test)]
