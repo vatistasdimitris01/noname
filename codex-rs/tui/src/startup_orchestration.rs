@@ -6,6 +6,7 @@
 use super::*;
 use codex_terminal_detection::Multiplexer;
 use codex_terminal_detection::TerminalName;
+use codex_ollama::OllamaClient;
 
 pub(super) async fn run_main_inner(
     mut cli: Cli,
@@ -520,6 +521,16 @@ pub(super) async fn run_main_inner(
         .await?;
     if app_server_target.uses_embedded_network_policy() {
         embedded_network_policy.activate(&mut config);
+    }
+    // noname: auto-select the first available Ollama model when none is specified.
+    if config.model.is_none() {
+        if let Ok(client) = OllamaClient::try_from_oss_provider(&config).await {
+            if let Ok(models) = client.fetch_models().await {
+                if let Some(first) = models.first() {
+                    config.model = Some(first.clone());
+                }
+            }
+        }
     }
     startup_draft.apply_settings(
         &crate::local_settings::LocalSettings::from(&config),

@@ -4991,6 +4991,7 @@ dependencies = [
  "codex-model-provider",
  "codex-model-provider-info",
  "codex-models-manager",
+ "codex-ollama",
  "codex-otel",
  "codex-plugin",
  "codex-protocol",
